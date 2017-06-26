@@ -1,0 +1,29 @@
+inherit ocaml
+
+NAME="ocaml-csv"
+VERSION=1.6
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="OCaml library for CSV files"
+DESCRIPTION="The comma-separated values format — or CSV for short — is a simple
+tabular format supported by all major spreadsheets. This library implements
+pure OCaml functions to read and write files in this format as well as some
+convenience functions to manipulate such data."
+HOMEPAGE="https://github.com/Chris00/ocaml-csv"
+SRC_URI="${HOMEPAGE}/releases/download/${VERSION}/csv-${VERSION}.tar.gz"
+SRC_DIR="csv-${VERSION}"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	${OCAML} setup.ml -configure
+	${OCAML} setup.ml -build
+}
+
+src_install() {
+	cd ${B}
+	dodir ${OCAML_LIBDIR}
+	export OCAMLFIND_DESTDIR="${D}${OCAML_LIBDIR}"
+	export OCAMLFIND_LDCONF=ignore
+	${OCAML} setup.ml -install
+}
